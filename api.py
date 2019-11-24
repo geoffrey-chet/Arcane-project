@@ -44,7 +44,7 @@ biens_schema = BienSchema(many=True)
 
 
 # Creer un bien
-@app.route('/bien', methods=['POST'])
+@app.route('/biens', methods=['POST'])
 def ajouter_bien():
   id=request.json['id']
   name = request.json['name']
@@ -62,13 +62,19 @@ def ajouter_bien():
   return biens_schema.jsonify(nouveau_bien)
 
 # Récupérer tous les biens
-@app.route('/bien', methods=['GET'])
+@app.route('/biens', methods=['GET'])
 def recuperer_biens():
   afficher_biens = Biens.query.all()
   result = biens_schema.dump(afficher_biens)
   return jsonify(result)
 
-
+# Afficher les biens d'une ville
+@app.route('/biens_par_ville/<ville>', methods=['GET'])
+def afficher_biens_ville(ville):
+  ville=str.capitalize(ville)
+  afficher_biens = Biens.query.filter(Biens.ville==ville)
+  result = biens_schema.dump(afficher_biens)
+  return jsonify(result)
 
 
 # Run Server
