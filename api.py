@@ -16,7 +16,7 @@ ma = Marshmallow(app)
 # Biens Class/Model
 class Biens(db.Model):
   id = db.Column(db.Integer, primary_key=True)
-  name = db.Column(db.String(100), unique=True)
+  name = db.Column(db.String(100),unique=True)
   description = db.Column(db.String(200))
   type = db.Column(db.String(50))
   ville= db.Column(db.String(50))
@@ -69,14 +69,45 @@ def recuperer_biens():
   return jsonify(result)
 
 # Afficher les biens d'une ville
-@app.route('/biens_par_ville/<ville>', methods=['GET'])
+@app.route('/biens/filtre_par_ville/<ville>', methods=['GET'])
 def afficher_biens_ville(ville):
   ville=str.capitalize(ville) #Ajoute une majuscule à la première lettre 
   afficher_biens = Biens.query.filter(Biens.ville==ville)
   result = biens_schema.dump(afficher_biens)
   return jsonify(result)
 
+#Modifier un bien
+@app.route('/biens/modifier/<id>', methods=['PUT'])
+def update_product(id):
+  bien = Biens.query.get(id)
 
+  name = request.json['name']
+  description = request.json['description']
+  type = request.json['type']
+  ville = request.json['ville']
+  caracteristiques = request.json['caracteristiques']
+  proprietaire = request.json['proprietaire']
+  pieces = request.json['pieces']
+
+  bien.id=id
+  bien.name = name
+  bien.description = description
+  bien.type = type
+  bien.ville = ville
+  bien.caracteristiques = caracteristiques
+  bien.proprietaire = proprietaire
+  bien.pieces = pieces
+
+  db.session.commit()
+
+  return biens_schema.jsonify(bien)
+
+# Afficher un bien par id
+@app.route('/biens/afficher/<id>', methods=['GET'])
+def afficher_biens_id(id):
+  afficher_biens = Biens.query.filter(Biens.id==id)
+  result = biens_schema.dump(afficher_biens)
+  return jsonify(result)
 # Run Server
 if __name__ == '__main__':
   app.run(debug=True)
