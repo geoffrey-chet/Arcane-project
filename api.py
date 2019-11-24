@@ -71,7 +71,7 @@ def recuperer_biens():
 # Afficher les biens d'une ville
 @app.route('/biens_par_ville/<ville>', methods=['GET'])
 def afficher_biens_ville(ville):
-  ville=str.capitalize(ville)
+  ville=str.capitalize(ville) #Ajoute une majuscule à la première lettre 
   afficher_biens = Biens.query.filter(Biens.ville==ville)
   result = biens_schema.dump(afficher_biens)
   return jsonify(result)
