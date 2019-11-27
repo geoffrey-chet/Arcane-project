@@ -3,9 +3,9 @@
 API  pour une application de gestion immobilière
 
 ## Récupération des fichiers depuis git
-
+```
 git clone https://github.com/geoffrey-chet/Arcane-project.git
-
+```
 ## Installation des librairies
 
 Accedez à la racine du projet avec une console python puis installez les librairies avec la commande suivante:
